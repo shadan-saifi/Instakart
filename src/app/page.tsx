@@ -1,100 +1,296 @@
+"use client";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import {
+  carousalItems,
+  homeCardsItems,
+  secondCarousalItems,
+  thirdCarousalItems,
+} from "@/helpers/data/homePageData";
 import Image from "next/image";
+import Autoplay from "embla-carousel-autoplay";
+import { useRef } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import Link from "next/link";
+import Logo from "@/components/logo";
 
 export default function Home() {
+  const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
+  // const router = useRouter();
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen max-w-screen  ">
+      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start sm:p-16 p-14 sm:pt-8  pt-4">
+        <Carousel
+          className="w-full max-w-full max-h-80"
+          plugins={[plugin.current]}
+          onMouseEnter={plugin.current.stop}
+          onMouseLeave={plugin.current.reset}
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+        >
+          <CarouselContent>
+            {carousalItems.map((item, index) => (
+              <CarouselItem
+                key={index}
+                className="w-full relative h-36 sm:h-44 md:h-54 lg:h-72"
+              >
+                <Image
+                  src={item.to}
+                  alt={item.name}
+                  fill
+                  className="object-cover"
+                />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4  grid-flow-row gap-1">
+          {homeCardsItems.map((item) => (
+            <Card key={item?.name}>
+              <CardHeader>
+                <CardTitle>{item?.name}</CardTitle>
+                <CardDescription>{item?.description}</CardDescription>
+              </CardHeader>
+              <CardContent className="grid grid-cols-2  grid-flow-row gap-1">
+                {item?.subItems?.map((subItem) => (
+                  <Link
+                    href={subItem?.to}
+                    key={subItem?.to}
+                    className="relative w-full max-w-xs aspect-square sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl"
+                  >
+                    <Image
+                      src={subItem?.img}
+                      alt={subItem?.name}
+                      priority={true}
+                      fill={true}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover"
+                    />
+                    <span className="absolute text-sm bottom-1 left-1 font-semibold bg-slate-900 bg-transparent text-white opacity-80">
+                      {subItem?.name}
+                    </span>
+                  </Link>
+                ))}
+              </CardContent>
+              <CardFooter>
+                <Link href={item?.to} className="text-blue-900">
+                  Explore all
+                </Link>
+              </CardFooter>
+            </Card>
+          ))}
         </div>
+        <Carousel
+          opts={{
+            align: "start",
+          }}
+          className="w-full max-w-full max-h-96"
+        >
+          <span className="text-2xl font-semibold text-gray-800">
+            New Arrival discount 20% at Shoes
+          </span>
+          <CarouselContent>
+            {secondCarousalItems?.map((item, index) => (
+              <CarouselItem
+                key={index}
+                className=" sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5 2xl:basis-1/6 max-w-full max-h-80 xl:h-72 lg:h-64 h-60 "
+              >
+                <Card className="flex items-center justify-center h-full">
+                  <CardContent className="relative aspect-square h-full p-0">
+                    <Image
+                      src={item.img}
+                      alt={item.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </CardContent>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+        <Carousel
+          opts={{
+            align: "start",
+          }}
+          className="w-full max-w-full max-h-96"
+        >
+          <span className="text-2xl font-semibold text-gray-800">
+            Buy at 50% discount
+          </span>
+          <CarouselContent>
+            {thirdCarousalItems?.map((item, index) => (
+              <CarouselItem
+                key={index}
+                className=" sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5 2xl:basis-1/6 max-w-full max-h-80 xl:h-72 lg:h-64 h-60 "
+              >
+                <Card className="flex items-center justify-center h-full">
+                  <CardContent className="relative aspect-square h-full p-0">
+                    <Image
+                      src={item.img}
+                      alt={item.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </CardContent>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      <footer className="bg-gray-800 text-white py-8 ">
+        <div className="text-center mb-6">
+          <button className="text-blue-500 hover:text-blue-400">
+            Back to Top
+          </button>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+          <div>
+            <h3 className="text-lg font-semibold mb-3">Get to Know Us</h3>
+            <ul className="space-y-2">
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Careers
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Blog
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  About Instakart
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Investor Relations
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Instakart Devices
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Instakart Science
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-3">Customer Service</h3>
+            <ul className="space-y-2">
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Help & Customer Service
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Returns & Replacements
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Shipping Rates & Policies
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Manage Your Account
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Order Tracking
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-3">Payment & Shipping</h3>
+            <ul className="space-y-2">
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Payment Options
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Google Pay
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Shipping
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Returns & Exchanges
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-3">Legal & Privacy</h3>
+            <ul className="space-y-2">
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Conditions of Use
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Privacy Notice
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-400">
+                  Your Ads Privacy Choices
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="flex justify-center mx-auto ">
+          <Link href="/" className="flex items-center size-14">
+            <Logo />
+          </Link>
+        </div>
+
+        <div className="text-center text-sm">
+          <p>© 1996-2023, Amazon.com, Inc. or its affiliates</p>
+        </div>
       </footer>
     </div>
   );
