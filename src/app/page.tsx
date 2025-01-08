@@ -25,11 +25,43 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import Logo from "@/components/logo";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { getCurrentUser } from "@/services/userServices";
+import { login, logout } from "@/store/authSlice";
+import { AxiosError } from "axios";
+import { ApiErrorInterface } from "@/types/ApiErrorInterface";
+import handleAxiosError from "@/helpers/handleAxiosError";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
   const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
   // const router = useRouter();
-  return (
+  const dispatch=useDispatch();
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    (async () => {
+      try {
+        const userData = await getCurrentUser();
+        if (userData) {
+          dispatch(login({ userData }));
+        } else {
+          dispatch(logout());
+        }
+      } catch (error) {
+        const response = handleAxiosError(error as AxiosError<ApiErrorInterface>);
+        // const errorMessage = response?.message
+        console.log("Error getting current user", response);
+        dispatch(logout());
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [dispatch]);
+
+
+  return !loading ? (
     <div className="min-h-screen max-w-screen  ">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start sm:p-16 p-14 sm:pt-8  pt-4">
         <Carousel
@@ -292,6 +324,14 @@ export default function Home() {
           <p>© 1996-2023, Amazon.com, Inc. or its affiliates</p>
         </div>
       </footer>
+    </div>
+  ) : (
+    <div className=" flex flex-col justify-center items-center w-full h-svh space-y-3">
+      <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-[250px]" />
+        <Skeleton className="h-4 w-[200px]" />
+      </div>
     </div>
   );
 }

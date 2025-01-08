@@ -11,12 +11,11 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { toast, useToast } from "@/hooks/use-toast"
+import { toast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -87,7 +86,7 @@ export default function SignUpForm() {
     return (
         <Card className="w-[450px] max-w-7xl mx-auto my-16 shadow-md">
             <CardHeader>
-                <CardTitle>Whisper Net</CardTitle>
+                <CardTitle>Instacart</CardTitle>
                 <CardDescription>
                     <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
                         Log in here
@@ -131,7 +130,7 @@ export default function SignUpForm() {
                 </Form>
             </CardContent>
             <CardFooter className="flex justify-between">
-                <Button type="submit" onClick={form.handleSubmit(onSubmit)} className='w-full' disabled={isSubmitting}>
+                <Button type="submit" variant="destructive" onClick={form.handleSubmit(onSubmit)} className='w-full' disabled={isSubmitting}>
                     {isSubmitting ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

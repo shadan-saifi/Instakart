@@ -16,13 +16,15 @@ import { Input } from "./ui/input";
 import { useAppSelector } from "@/store/hooks";
 import { ShoppingBasketIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import LogoutBtn from "./LogoutBtn";
 function Navbar() {
     const [query, setQuery] = useState("")
     const router= useRouter()
 
     const authStatus = useAppSelector((state) => state.auth.status)
     const user = useAppSelector((state) => state.auth.userData)
-
+    console.log("user", user);
+    
     const handleKeyDown = (e:KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' &&  query.trim() !== "")
         {
@@ -99,16 +101,15 @@ function Navbar() {
                     <MenubarTrigger>
                         <Avatar className="max-w-[120px] sm:h-14 h-10 sm:w-14 w-10">
                             <AvatarImage src={user?.data?.avatar?.secure_url} />
-                            <AvatarFallback>CN</AvatarFallback>
+                            <AvatarFallback>{user?.data?.username}&nbsp;s Account</AvatarFallback>
                         </Avatar>
                     </MenubarTrigger>
-                    <MenubarContent>
+                    <MenubarContent className="bg-gray-100">
                         <li className="flex flex-row justify-center items-center">
                             <Avatar>
                                 <AvatarImage src={user?.data?.avatar?.secure_url} />
-                                <AvatarFallback>CN</AvatarFallback>
+                                <AvatarFallback>Avatar</AvatarFallback>
                             </Avatar>
-
                             <div className="p-2 flex flex-col justify-between items-center">
                                 <div className="text-lg font-semibold">{user?.data?.username}</div>
                                 <div className=" font-medium">{user?.data?.email}</div>
@@ -116,14 +117,20 @@ function Navbar() {
                         </li>
                         <MenubarSeparator />
                         <MenubarItem>
-                            <Link href={`/${user?.data?.username}/videos`} >View your channel</Link>
+                            <Link href={`/user/profile/${user?.data?.username}  `} >Profile</Link>
                         </MenubarItem>
                         <MenubarItem>
-                            <Link href={`/channel/dashboard`} >View your dashboard</Link>
+                            <Link href={`user/orders/${user?.data?.username}/channel`} >Orders</Link>
+                        </MenubarItem>
+                        <MenubarItem>
+                            <Link href={`user/wishlist/${user?.data?.username}`} >Wishlist</Link>
+                        </MenubarItem>
+                        <MenubarItem>
+                            <Link href={`user/notifications/${user?.data?.username}`} >Notifications</Link>
                         </MenubarItem>
                         <MenubarSeparator />
                         <MenubarItem>
-                            {/* <LogoutBtn /> */}
+                            <LogoutBtn />
                         </MenubarItem>
                     </MenubarContent>
                 </MenubarMenu>

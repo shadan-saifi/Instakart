@@ -18,13 +18,13 @@ function NavItems() {
       {navItems.map((item) => (
         <MenubarMenu key={item?.name}>
           <MenubarTrigger>{item?.name}</MenubarTrigger>
-          <MenubarContent>
+          <MenubarContent className="bg-gray-100">
             {item?.subItems?.map((subItem) => (
               <MenubarSub key={subItem?.name}>
                 <MenubarSubTrigger>
                   <Link href={subItem?.to}>{subItem?.name}</Link>
                 </MenubarSubTrigger>
-                <MenubarSubContent>
+                <MenubarSubContent className="bg-gray-100">
                   {
                     subItem?.subSubItems?.map((subSubItem) => (
                       <MenubarItem key={subSubItem?.name}>

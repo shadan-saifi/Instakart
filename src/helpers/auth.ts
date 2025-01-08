@@ -1,5 +1,4 @@
 import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import UserModel from '@/models/user.model';
 import { ApiError } from './ApiError';

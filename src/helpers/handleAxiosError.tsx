@@ -1,5 +1,4 @@
 import { AxiosError } from "axios";
-import { ApiError } from "./ApiError";
 import { ApiErrorInterface } from "@/types/ApiErrorInterface";
 
 

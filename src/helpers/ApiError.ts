@@ -7,7 +7,7 @@ export class ApiError extends Error implements ApiErrorInterface {
        public statusCode: number,
        public message: string = "Something went wrong",
        public errors: string[] = [],
-       public data:any=null,
+       public data:object| null=null,
        public stack?: string,
        public success = false,
 

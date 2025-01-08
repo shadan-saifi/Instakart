@@ -7,12 +7,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { toast, useToast } from "@/hooks/use-toast"
+import { toast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -25,7 +24,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { signUpSchema } from "@/schemas/signUpSchema"
-import { useEffect, useState } from "react"
+import {  useState } from "react"
 import { useRouter } from "next/navigation"
 import axios, { AxiosError } from "axios"
 import handleAxiosError from "@/helpers/handleAxiosError"

@@ -11,12 +11,11 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { toast, useToast } from "@/hooks/use-toast"
+import { toast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -40,7 +39,9 @@ export default function SignUpForm() {
     const router = useRouter()
     //  const {toast}=useToast()
     const params=useParams<{username:string}>()
-    const username=params?.username //we are not decoding the username because it is handled in backend
+    
+    const usernameEncoded=params?.username 
+    const username = decodeURIComponent(usernameEncoded)
 
     const form = useForm<z.infer<typeof verificationCodeSchema>>({
         resolver: zodResolver(verificationCodeSchema),

@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { toast, useToast } from "@/hooks/use-toast"
+import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
 import {
     Form,
@@ -51,6 +51,7 @@ function UploadAvatar() {
                         title: "Success",
                         description: response?.data?.message || "Avatar uploaded successfully",
                     })
+                    router.push("/user/profile")
                 }
             }
 
